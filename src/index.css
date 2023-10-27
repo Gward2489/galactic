@@ -1,0 +1,60 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Define Bebas Neue */
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('./fonts/BebasNeue-Regular.ttf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Define Open Sans */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./fonts/OpenSans-Regular.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./fonts/OpenSans-SemiBold.ttf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./fonts/OpenSans-Bold.ttf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@media print {
+  .score-background {
+      background-color: #EF4265 !important;
+      -webkit-print-color-adjust: exact;
+  }
+
+  .green-box {
+    background-color: #05a454 !important;
+    -webkit-print-color-adjust: exact;
+}
+
+.red-box {
+    background-color: #ef4265 !important;
+    -webkit-print-color-adjust: exact;
+}
+
+.grey-box {
+    border: 0.75px solid #707070 !important;
+    background-color: transparent !important;
+}
+
+.page-break {
+    page-break-before: always;
+}
+
+}
