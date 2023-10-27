@@ -6,8 +6,19 @@ type ScoreProps = {
 };
 
 const Score: React.FC<ScoreProps> = ({ score }) => {
+
+  const getBackgroundColorClass = () => {
+    if (score > 80) {
+      return 'score-background-green';
+    } else if (score > 35) {
+      return 'score-background-yellow';
+    } else {
+      return 'score-background-red';
+    }
+  };
+
   return (
-    <div className="score-background score">
+    <div className={`score-background ${getBackgroundColorClass()} score`}>
       <div className="score-text">{score}%</div>
     </div>
   );

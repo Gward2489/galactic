@@ -33,10 +33,21 @@
 }
 
 @media print {
-  .score-background {
+  .score-background-red {
       background-color: #EF4265 !important;
       -webkit-print-color-adjust: exact;
   }
+
+  .score-background-green {
+    background-color: #42ef56 !important;
+    
+    -webkit-print-color-adjust: exact;
+}
+
+.score-background-yellow {
+  background-color: #e1db37 !important;
+  -webkit-print-color-adjust: exact;
+}
 
   .green-box {
     background-color: #05a454 !important;

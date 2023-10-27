@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Question from './question';
 import Score from './score';
 import Header from './Header';
 import OverallScore from './overallScore';
 
 type QuestionTemplate = {
+  id: string;
   text: string;
   hasComment: boolean;
   style: 'question-white' | 'question-light-grey';
@@ -24,12 +25,12 @@ const sections: Section[] = [
   {
     title: 'Section Title',
     questions: [
-      { text: 'Do you manage privileged accounts using a privileged access management software (PAM)?', hasComment: true, style: 'question-white' },
-      { text: 'If a PAM solution is deployed, is accessible in a “check-in/out” model?', hasComment: true, style: 'question-light-grey' },
-      { text: 'Do you use MFA to protect all local and remote access to privileged user accounts?', hasComment: false, style: 'question-white' },
-      { text: 'Do you manage privileged accounts using a privileged access management software (PAM)?', hasComment: false, style: 'question-light-grey' },
-      { text: 'If a PAM solution is deployed, is accessible in a “check-in/out” model?', hasComment: false, style: 'question-white' },
-      { text: 'Do you use MFA to protect all local and remote access to privileged user accounts?', hasComment: false, style: 'question-light-grey' },
+      {id: '1', text: 'Do you manage privileged accounts using a privileged access management software (PAM)?', hasComment: true, style: 'question-white' },
+      {id: '2', text: 'If a PAM solution is deployed, is accessible in a “check-in/out” model?', hasComment: true, style: 'question-light-grey' },
+      {id: '3', text: 'Do you use MFA to protect all local and remote access to privileged user accounts?', hasComment: false, style: 'question-white' },
+      {id: '4', text: 'Do you manage privileged accounts using a privileged access management software (PAM)?', hasComment: false, style: 'question-light-grey' },
+      {id: '5', text: 'If a PAM solution is deployed, is accessible in a “check-in/out” model?', hasComment: false, style: 'question-white' },
+      {id: '6', text: 'Do you use MFA to protect all local and remote access to privileged user accounts?', hasComment: false, style: 'question-light-grey' },
     
     
     ]
@@ -37,40 +38,53 @@ const sections: Section[] = [
   {
     title: 'Section Title',
     questions: [
-      { text: 'Do you manage privileged accounts using a privileged access management software (PAM)?', hasComment: false, style: 'question-white' },
-      { text: 'If a PAM solution is deployed, is accessible in a “check-in/out” model?', hasComment: false, style: 'question-light-grey' },
-      { text: 'Do you use MFA to protect all local and remote access to privileged user accounts?', hasComment: false, style: 'question-white' },
-      { text: 'Do you manage privileged accounts using a privileged access management software (PAM)?', hasComment: false, style: 'question-light-grey' },
-      { text: 'If a PAM solution is deployed, is accessible in a “check-in/out” model?', hasComment: false, style: 'question-white' },
-      { text: 'Do you use MFA to protect all local and remote access to privileged user accounts?', hasComment: false, style: 'question-light-grey' },
+      {id: '7', text: 'Do you manage privileged accounts using a privileged access management software (PAM)?', hasComment: false, style: 'question-white' },
+      {id: '8', text: 'If a PAM solution is deployed, is accessible in a “check-in/out” model?', hasComment: false, style: 'question-light-grey' },
+      {id: '9', text: 'Do you use MFA to protect all local and remote access to privileged user accounts?', hasComment: false, style: 'question-white' },
+      {id: '10', text: 'Do you manage privileged accounts using a privileged access management software (PAM)?', hasComment: false, style: 'question-light-grey' },
+      {id: '11', text: 'If a PAM solution is deployed, is accessible in a “check-in/out” model?', hasComment: false, style: 'question-white' },
+      {id: '12', text: 'Do you use MFA to protect all local and remote access to privileged user accounts?', hasComment: false, style: 'question-light-grey' },
     
     
     ]
   }
 ]
 
-const initialAnswers: Record<string, Answer | null> = {
-  'Question 1': null,
-  'Question 2': null,
-  // ...other questions
-};
-
+const initialAnswers: Record<string, Answer | null> = Object.fromEntries(
+  sections.flatMap(section =>
+    section.questions.map(question => [question.id, null]) 
+  )
+);
 
 const FormDemo: React.FC = () => {
   const [answers, setAnswers] = useState(initialAnswers);
+  const [score, setScore] = useState(0);
 
-  const handleUpdateAnswer = (questionText: string, newAnswer: Answer) => {
+  const handleUpdateAnswer = (questionId: string, newAnswer: Answer) => { 
     setAnswers(prevAnswers => ({
       ...prevAnswers,
-      [questionText]: newAnswer,
+      [questionId]: newAnswer,  
     }));
   };
 
-  const calculateScore = () => {
-    // Placeholder for server call to calculate score
-    // For now, return a default score of 17
-    return 17;
-  };
+  useEffect(() => {
+    let totalQuestions = 0;
+    sections.forEach(section => {
+        totalQuestions += section.questions.length;
+    });
+
+    let yesCount = 0;
+    Object.values(answers).forEach(answer => {
+        if (answer && answer.checkbox === 'yes') {
+            yesCount += 1;
+        }
+    });
+
+    const percentage = Math.round((yesCount / totalQuestions) * 100);
+    setScore(percentage);
+}, [answers]);
+
+
 
   return (
     <div className="form-demo pt-10 pb-10 pl-20 pr-20">
@@ -80,7 +94,7 @@ const FormDemo: React.FC = () => {
         approvedOn="03/04/2023"
         reviewerName="Jane Smith"
       />
-      <OverallScore score={calculateScore()} />
+      <OverallScore score={score} />
 
       {sections.map((section, sectionIndex) => (
         <div key={sectionIndex} className="section">
@@ -91,8 +105,8 @@ const FormDemo: React.FC = () => {
               hasComment={question.hasComment}
               text={question.text}
               style={question.style}
-              answer={answers[question.text]}
-              onUpdateAnswer={(newAnswer) => handleUpdateAnswer(question.text, newAnswer)}
+              answer={answers[question.id]}
+              onUpdateAnswer={(newAnswer) => handleUpdateAnswer(question.id, newAnswer)}
             />
           ))}
         { 
@@ -102,7 +116,7 @@ const FormDemo: React.FC = () => {
         </div>
       ))}
       <div className='page-break'></div>
-      <OverallScore score={calculateScore()} />
+      <OverallScore score={score} />
     </div>
   );
 };

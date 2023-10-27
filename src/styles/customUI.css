@@ -1,5 +1,4 @@
 .score-background {
-  background: #ef4265 0% 0% no-repeat padding-box;
   opacity: 1;
   min-width: 100px; /* Adjust to your desired width */
   height: 35px; /* Adjust to your desired height */
@@ -8,6 +7,19 @@
   justify-content: center;
   align-items: center;
 }
+
+.score-background-green {
+  background: #42ef56 0% 0% no-repeat padding-box;
+}
+
+.score-background-yellow {
+  background: #deef42 0% 0% no-repeat padding-box;
+}
+
+.score-background-red {
+  background: #ef4265 0% 0% no-repeat padding-box;
+}
+
 
 .score-text {
   text-align: center;
